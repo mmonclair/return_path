@@ -1,3 +1,7 @@
+/**
+* Top-level UI component
+*/
+
 import React, { Component } from 'react';
 import View from './components/view';
 

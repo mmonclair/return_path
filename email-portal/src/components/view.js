@@ -1,7 +1,12 @@
+/**
+* Creates the UI view, and builds API call to local service
+*/
+
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import { post } from 'axios'
 
+// styles used
 const StyledHeadline = styled.h1`
 	{
 		font-size: 1rem;
@@ -24,6 +29,13 @@ const SectionDiv = styled.div`
 	}
 `;
 
+const ListItem = styled.li`
+	{
+		font-size: 0.75rem;
+		list-style-type: none;
+	}
+`;
+
 class View extends Component {
 	constructor(props) {
 		super(props);
@@ -36,9 +48,9 @@ class View extends Component {
 		this.handleUpload = this.handleUpload.bind(this);
 		this.onChange = this.onChange.bind(this);
 		this.fileUpload = this.fileUpload.bind(this);
-		this.displayResults = this.displayResults(this);
 	  }
 	
+	// adds the contents of the file to the component state
 	readFile(e) {
 		const content = this.fileReader.result;
 		
@@ -50,19 +62,23 @@ class View extends Component {
 		})
 	}
 	
+	// sets up a FileReader to get the file content
 	handleUpload(e) {
-		e.preventDefault() // Stop form submit
+		e.preventDefault();
 		
 		this.fileReader = new FileReader();
 		this.fileReader.onloadend = this.readFile;
 		this.fileReader.readAsText(this.state.file);
 	};
-
+	
+	// form field handler for file upload
 	onChange(e) {
 		this.setState({file:e.target.files[0]})
 	};
-
+	
+	// sets up and executes API call
 	fileUpload(content) {
+		// local API call, using Axios
 		const url = 'http://localhost:8080/submit';
 		const config = {
 			headers: {
@@ -79,19 +95,6 @@ class View extends Component {
             }, 
 			body: content
         }, config );
-	};
-	
-	displayResults() {
-		const result = this.state.responseDetail;
-		
-		return result ? (
-			<ul>
-				<li>To: {result.To}</li>
-				<li>From: {result.From}</li>
-				<li>Subject: {result.Subject}</li>
-				<li>Date: {result.Date}</li>
-			</ul>
-		) : "Please submit a message";
 	};
 	
 	render() {
@@ -116,10 +119,10 @@ class View extends Component {
 						{
 							this.state.responseDetail ? (
 								<ul>
-									<li>To: {this.state.responseDetail.To}</li>
-									<li>From: {this.state.responseDetail.From}</li>
-									<li>Subject: {this.state.responseDetail.Subject}</li>
-									<li>Date: {this.state.responseDetail.Date}</li>
+									<ListItem><b>To</b>: {this.state.responseDetail.To}</ListItem>
+									<ListItem><b>From:</b> {this.state.responseDetail.From}</ListItem>
+									<ListItem><b>Subject:</b> {this.state.responseDetail.Subject}</ListItem>
+									<ListItem><b>Date:</b> {this.state.responseDetail.Date}</ListItem>
 								</ul>
 							) : "Please submit a message"
 						}

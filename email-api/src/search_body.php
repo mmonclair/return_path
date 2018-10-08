@@ -14,7 +14,7 @@ function getResponse($message){
 }
 
 function getLine($message, $searchStr) {
-	$lines = explode(PHP_EOL, $message);
+	$lines = explode('\n', $message);
 	$line = '';
 	foreach($lines as $k => $v) {
 		if(substr_compare($v, $searchStr, 0, strlen($searchStr), TRUE) === 0) {

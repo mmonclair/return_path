@@ -1,27 +1,26 @@
 version: “2”
 services:
-	slim:
-		container_name: email-api
-        image: php:7-alpine
-        working_dir: /var/www
-        command: composer start
-        environment:
-            docker: "true"
-        ports:
-            - 8080:8080
-        volumes:
-            - ./email-api:/var/www
-	email-portal:
-		container_name: email-portal
-		build:
-		  context: ./email-portal
-		  dockerfile: Dockerfile
-		volumes:
-		  - ./email-api:/usr/src/app
-		  - ./email-api:/usr/src/app/node_modules
-		ports:
-		  - 3000:3000
-		environment:
-		  - NODE_ENV=development
-        command: npm start
-		
+  slim:
+    container_name: email-api
+    image: php:7-alpine
+    working_dir: /var/www
+    command: composer start
+    environment:
+    docker: "true"
+    ports:
+      - 8080:8080
+    volumes:
+      - ./email-api:/var/www
+  email-portal:
+    container_name: email-portal
+    build:
+      context: ./email-portal
+      dockerfile: Dockerfile
+    volumes:
+      - ./email-api:/usr/src/app
+      - ./email-api:/usr/src/app/node_modules
+    ports:
+      - 3000:3000
+    environment:
+    - NODE_ENV=development
+    command: npm start

@@ -18,5 +18,6 @@ Sample project for Return Path
     <li>There is a Docker Compose file in the application root that I'm still working on. I'd like to try to finish it before Thursday.</li>
     <li>I had a CORS issue in trying to call the API, which I resolved by installing the CORS plugin in Chrome. This, of course is not ideal. I tried to find a way to configure my Slim router to allow cross-domain connections, rather than set it in my local Apache server, so that this setting would follow the application, rather than depend on the local server.</li>
     <li>I had written the app for the happy path prior to working on the Docker part of the exercise. I will work on error handling before Wednesday, Oct 10.</li>
+	<li>Update: I changed the getResponse() method in the API to look for possibly invalid files. I changed the rendering of the output in the UI to cycle through the keys in the response, ignoring Message-ID.</li>
   </ul>
   </div>

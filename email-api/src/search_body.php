@@ -6,15 +6,24 @@
 
 // assembles array of items to be returned
 function getResponse($message){
-	$response = array(
-		"To" => getLine($message, 'To:'),
-		"From" => getLine($message, 'From:'),
-		"Date" => getLine($message, 'Date:'),
-		"Subject" => getLine($message, 'Subject:'),
-		"Message-ID" => getLine($message, 'Message-ID:')
-	);
+	$response = array();
+	$count = 0;
+	$keys = array("To","From","Date","Subject","Message-ID");
+	// iterate through keys to look for the matching line in the submitted file
+	foreach($keys as $key) {
+		$line = getLine($message, "$key:");
+		if ($line !== 'not found') {
+			$count++;
+		}
+		$response[$key] = $line;
+	}
 	
-	return $response;
+	// if more than 0 lines are found, return array. If none found, send a warning
+	if ($count > 0) { 
+		return $response; 
+	} else {
+		return array("Warning" => "The file submitted may not be a valid email message");
+	}
 }
 
 // looks for each item in the return array
@@ -22,14 +31,14 @@ function getLine($message, $searchStr) {
 	// create an array on each line of the text
 	$lines = explode('\n', $message);
 	
-	// initialize a blank string
-	$line = '';
+	// initialize a string with 'not found'
+	$line = 'not found';
 	
 	// check each line of the text. Look for the line that 
 	// starts with the $searchString. Avoid using regex matching 
 	// due to possible issues with reserved characters in PHP
 	foreach($lines as $k => $v) {
-		if(substr_compare($v, $searchStr, 0, strlen($searchStr), TRUE) === 0) {
+		if(strlen($v) > 0 && substr_compare($v, $searchStr, 0, strlen($searchStr), TRUE) === 0) {
 			$line = $v;
 			break;
 		}

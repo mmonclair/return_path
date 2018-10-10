@@ -48,6 +48,7 @@ class View extends Component {
 		this.handleUpload = this.handleUpload.bind(this);
 		this.onChange = this.onChange.bind(this);
 		this.fileUpload = this.fileUpload.bind(this);
+		this.parseDetail = this.parseDetail.bind(this);
 	  }
 	
 	// adds the contents of the file to the component state
@@ -97,6 +98,20 @@ class View extends Component {
         }, config );
 	};
 	
+	parseDetail() {
+		const rows = [];
+		for (const key of Object.keys(this.state.responseDetail)) {
+			if (key !== 'Message-ID'){
+				rows.push(
+					<ListItem key={key}>
+						<b>{key}</b>: {this.state.responseDetail[key]}
+					</ListItem>
+				);
+			}
+		}
+		return <ul>{rows}</ul>;
+	};
+	
 	render() {
 		return (
 			<ContainerDiv>
@@ -117,14 +132,9 @@ class View extends Component {
 					</StyledHeadline>
 					<div>
 						{
-							this.state.responseDetail ? (
-								<ul>
-									<ListItem><b>To</b>: {this.state.responseDetail.To}</ListItem>
-									<ListItem><b>From:</b> {this.state.responseDetail.From}</ListItem>
-									<ListItem><b>Subject:</b> {this.state.responseDetail.Subject}</ListItem>
-									<ListItem><b>Date:</b> {this.state.responseDetail.Date}</ListItem>
-								</ul>
-							) : "Please submit a message"
+							this.state.responseDetail ?
+								this.parseDetail() : 
+								"Please submit a message"
 						}
 					</div>
 				</SectionDiv>
